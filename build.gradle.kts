@@ -39,7 +39,7 @@ tasks.withType<Test> {
 
 task<Exec>("npmInstall") {
     workingDir = file("${project.projectDir}")
-    commandLine("npm", "install")
+    commandLine("npm", "-D", "install")
 }
 
 task<Exec>("npmBuildCss") {
