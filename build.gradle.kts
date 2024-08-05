@@ -37,16 +37,21 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-task<Exec>("npmInstall") {
+val npmInstall by tasks.register<Exec>("npmInstall") {
     workingDir = file("${project.projectDir}")
-    commandLine("npm", "-D", "install")
+    commandLine("npm", "install")
 }
 
-task<Exec>("npmBuildCss") {
+val npmBuildCss by tasks.register<Exec>("npmBuildCss") {
     workingDir = file("${project.projectDir}")
     commandLine("npm", "run", "build:css")
+    dependsOn(npmInstall)
 }
 
 tasks.named("processResources") {
-    dependsOn("npmInstall", "npmBuildCss")
+    dependsOn(npmBuildCss)
+}
+
+tasks.named("bootJar") {
+    dependsOn(npmBuildCss)
 }
